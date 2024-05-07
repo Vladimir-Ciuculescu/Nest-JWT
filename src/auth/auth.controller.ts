@@ -16,6 +16,7 @@ import { UserDto } from 'src/users/dtos/user.dto';
 import { LoginUserDto } from 'src/users/dtos/login-user.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { LocalAuthGuard } from 'src/guards/local-auth.guard';
+import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 // import { AuthGuard } from 'src/guards/auth.guard';
 
 @Controller('auth')
@@ -33,16 +34,20 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   @Post('/login')
   @HttpCode(HttpStatus.OK)
-  @UseInterceptors(new SerializeInterceptor(UserDto))
-  login(@Body() body: LoginUserDto, @Req() req) {
-    return req.user;
+  // ! I used the serializer and that's why the token is not being sent back
+  // @UseInterceptors(new SerializeInterceptor(UserDto))
+  async login(@Body() body, @Req() req) {
+    // return { name: 'awdawd' };
+    return this.authService.login(req.user);
+    // return req.user;
     //return this.authService.signIn(body);
   }
 
   @Get('/profile')
   @HttpCode(HttpStatus.OK)
+  @UseGuards(JwtAuthGuard)
   // @UseGuards(AuthGuard)
-  getProfile() {
-    return 'awdad';
+  getProfile(@Req() req) {
+    return req.user;
   }
 }
