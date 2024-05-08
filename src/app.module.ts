@@ -5,13 +5,16 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { ConfigModule } from '@nestjs/config';
 import { PassportModule } from '@nestjs/passport';
+import { ArticlesModule } from './articles/articles.module';
 
 @Module({
   imports: [
     // PassportModule.register({ defaultStrategy: 'jwt' }),
     ConfigModule.forRoot(),
     AuthModule,
+
     UsersModule,
+    ArticlesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
