@@ -18,7 +18,8 @@ async function bootstrap() {
 
   SwaggerModule.setup('api', app, document);
 
-  app.useGlobalPipes(new ValidationPipe());
+  // ! Set whitelist to true if you want to transform string to number data when passing query params for example
+  app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
   await app.listen(3000);
 }
 bootstrap();
